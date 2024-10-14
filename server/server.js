@@ -6,6 +6,7 @@ const adminRoutes = require('./routes//adminRoutes')
 const path = require('path');
 const morgan = require('morgan')
 const app = express();
+require('dotenv').config()
 
 
 app.use(cors({

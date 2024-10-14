@@ -170,6 +170,7 @@ router.put('/update-profile',upload.single('pic'),async(req,res)=>{
 })
 
 
+
 router.get('/protected-route',userMiddleware , (req,res)=>{
     res.status(200).json({ message: 'This is a protected route.', user: req.user });
 })

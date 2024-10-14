@@ -7,7 +7,7 @@ import { loginUser, resetUserState } from '../../redux/userSlice';
 import {toast} from 'react-toastify'
 
 
-const Login = ({isAdminLogin}) => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,22 +15,18 @@ const Login = ({isAdminLogin}) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log('isAdminLogin',isAdminLogin)
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }, isAdminLogin));
+    dispatch(loginUser({ email, password } ));
   };
 
   // console.log('curr',currentUser);
   
   useEffect(() => {
     if (success && currentUser) {
-      if(isAdminLogin){
-        navigate('/admin/dashboard')
-      }else{
-        navigate('/')
-      }
+      navigate('/')
       toast.success('Login successful!', {
         position: "top-right",
         autoClose: 5000,
@@ -68,7 +64,7 @@ const Login = ({isAdminLogin}) => {
     <div className="login-container d-flex align-items-center justify-content-center">
       <div className="card shadow-lg">
         <div className="card-body p-5">
-          <h3 className="card-title text-center mb-4">{isAdminLogin ? 'Admin Login' : 'Login'}</h3>
+          <h3 className="card-title text-center mb-4">Login</h3>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group mb-3">

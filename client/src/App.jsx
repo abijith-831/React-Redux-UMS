@@ -10,9 +10,8 @@ import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import AdminDashboard from './pages/Admin'
 import ProtectedRoute from './components/User/ProtectedRoute'
-import AdminProtectedRoute from './components/User/AdminProtectedRoute'
-
-
+import AdminLogin from './components/Admin/AdminLogin';
+import AdminProtectedRoute from './components/Admin/AdminProtectedRoute';
 
 const App = () => {
   return (
@@ -22,11 +21,13 @@ const App = () => {
       closeOnClick pauseOnHover theme='light'/>
       <Routes>
         <Route path='/' element = {<ProtectedRoute><HomePage/></ProtectedRoute>}></Route>
-        <Route path='/login' element={<LoginPage isAdminLogin={false}/>}></Route>
+        <Route path='/login' element={<LoginPage />}></Route>
         <Route path='/signup' element={<SignUpPage/>}></Route>
 
-        <Route path='/admin/login' element={<LoginPage isAdminLogin={false} />} />
-        <Route path='/admin/dashboard' element={<AdminProtectedRoute><AdminDashboard/></AdminProtectedRoute>} />
+        <Route path='/admin' element={<AdminLogin />}/>
+        <Route path='/admin/login' element={<AdminLogin />}/>
+        <Route path='/admin/dashboard' element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+       
       </Routes>
     </Router>
   )
