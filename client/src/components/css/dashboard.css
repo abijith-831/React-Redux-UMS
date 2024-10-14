@@ -1,0 +1,10 @@
+
+.admin-container {
+    min-height: 100vh; 
+    background-image: url('/src/assets/banner-bg.png'); 
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    flex-direction: column;
+  }

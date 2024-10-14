@@ -1,0 +1,1 @@
+export const BACKENDENDPOINT= import.meta.env.VITE_BACKENDENDPOINT
