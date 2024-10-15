@@ -18,9 +18,9 @@ export const adminLogin = createAsyncThunk(
 
             const response = await axios.post('http://localhost:5002/api/admin/login', { email, password }, config); 
             
-            localStorage.setItem('adminToken',response.data.token)
+            localStorage.setItem('token',response.data.token)
             localStorage.setItem('adminUser',JSON.stringify(response.data.user))
-
+            console.log('ress',response.data);
             return response.data
         } catch (error) {
             const message =
@@ -39,6 +39,7 @@ const adminSlice = createSlice({
         loading: false,
         error: null,
         success: false,
+        users:[]
       },
       reducers: {
         adminLogout: (state) => {
@@ -77,6 +78,32 @@ const adminSlice = createSlice({
           });
       },
 })
+
+
+export const fetchUsers = createAsyncThunk(
+    'admin/fetchUsers',
+    async (_, thunkAPI) => {
+      try {
+        const token = localStorage.getItem('adminToken');
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        };
+        
+        const response = await axiosInstance.get('http://localhost:5002/api/admin/dashboard', config);
+        
+        return response.data;
+      } catch (error) {
+        const message =
+          (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          'Failed to fetch users.';
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  );
+  
 
 export const { adminLogout, resetAdminState } = adminSlice.actions;
 

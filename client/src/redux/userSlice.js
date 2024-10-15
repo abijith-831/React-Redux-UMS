@@ -140,7 +140,7 @@ export const signupUser = (userData) => async (dispatch) => {
 };
 
 
-export const loginUser = (credentials,isAdmin) => async (dispatch) => {
+export const loginUser = (credentials) => async (dispatch) => {
     dispatch(loginStart());
 
     try {
@@ -150,7 +150,7 @@ export const loginUser = (credentials,isAdmin) => async (dispatch) => {
             },
         };
 
-        const response = await axios.post(`http://localhost:5002/api/${isAdmin?'admin':'users'}/login`, credentials, config);
+        const response = await axios.post(`http://localhost:5002/api/users/login`, credentials, config);
         console.log('Login Response:', response.data);
 
         dispatch(loginSuccess(response.data));

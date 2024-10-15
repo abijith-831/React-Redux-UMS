@@ -20,7 +20,7 @@ const AdminNavbar = () => {
               aria-label="Search"
               
             />
-            {/* <Button variant="outline-success">Search</Button> */}
+            
           </Form>
           <Nav className="align-items-center">
             <Image

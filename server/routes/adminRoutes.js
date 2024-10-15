@@ -4,8 +4,10 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/UserModel')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const adminMiddleware = require('../middleware/adminMIddleware')
 
 
+///=======LOGIN ROUTE ============
 router.post('/login', async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -39,6 +41,18 @@ router.post('/login', async (req, res) => {
       res.status(200).json({ token, user: { email: process.env.ADMIN_EMAIL } });
     } catch (error) {
       console.error('Admin Login Error:', error);
+      res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+
+router.get('/dashboard', adminMiddleware, async (req, res) => {
+    try {
+      const users = await User.find().select('name email createdAt').sort({ createdAt: -1 })
+      
+      res.status(200).json(users);
+    } catch (error) {
+      console.error('Error fetching users:', error);
       res.status(500).json({ message: 'Server error.' });
     }
   });
