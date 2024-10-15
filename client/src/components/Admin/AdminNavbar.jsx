@@ -1,8 +1,18 @@
 import React from 'react'
-import { Navbar , Nav , Container , Form , FormControl , Button , Image } from 'react-bootstrap'
+import { Navbar , Nav , Container , Form , FormControl , Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import {adminLogout} from '../../redux/adminSlice'
 
 
 const AdminNavbar = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = ()=>{
+    dispatch(adminLogout())
+    navigate('/admin/login')
+  }
   return (
     <div>
       <Navbar bg="transparent" variant="dark" expand="lg" className="mb-4">
@@ -12,26 +22,8 @@ const AdminNavbar = () => {
         <Navbar.Collapse id="admin-navbar-nav">
           <Nav className="me-auto">
           </Nav>
-          <Form className="d-flex me-3">
-            <FormControl
-              type="search"
-              placeholder="Search Users"
-              className="me-2"
-              aria-label="Search"
-              
-            />
-            
-          </Form>
-          <Nav className="align-items-center">
-            <Image
-              
-              roundedCircle
-              width="40"
-              height="40"
-              className="me-2"
-              alt="Profile"
-            />
-            <Button variant="outline-light" style={{backgroundColor:'red'}} >
+          <Nav className="align-items-center">          
+            <Button variant="outline-light" style={{backgroundColor:'red'}} onClick={handleLogout} >
               Logout
             </Button>
           </Nav>

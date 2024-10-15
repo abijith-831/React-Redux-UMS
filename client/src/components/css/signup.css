@@ -1,16 +1,14 @@
-/* client/src/css/signup.css */
 
-/* Container Styling */
 .signup-container {
     min-height: 100vh;
+    
     background: linear-gradient(135deg, #4fb7fd, #b855df);
     padding: 20px;
   }
   
-  /* Card Styling */
   .card {
     width: 100%;
-    max-width: 900px; 
+    max-width: 850px;
     border: none;
     border-radius: 15px;
     background-color: rgba(255, 255, 255, 0.95);
@@ -33,12 +31,12 @@
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
   }
   
-  /* Form Labels */
+
   .form-label {
     font-weight: 600;
   }
   
-  /* Input Fields */
+
   .form-control:focus {
     border-color: #9b59b6;
     box-shadow: 0 0 0 0.2rem rgba(155, 89, 182, 0.25);
@@ -60,7 +58,7 @@
     background-color: #f0f0f0;
   }
   
-  /* Profile Preview Image */
+
   .profile-preview {
     width: 150px;
     height: 150px;
@@ -75,7 +73,7 @@
     border-color: #8e44ad;
   }
   
-  /* Links Styling */
+
   .signup-link {
     color: #9b59b6;
     text-decoration: none;
@@ -87,7 +85,7 @@
     text-decoration: underline;
   }
   
-  /* Responsive Adjustments */
+
   @media (max-width: 992px) {
     .card {
       max-width: 700px;
@@ -112,9 +110,7 @@
     }
   }
   
-  /* Additional Enhancements */
-  
-  /* Spinner Inside Button */
+
   .btn-primary .spinner-border {
     width: 1rem;
     height: 1rem;

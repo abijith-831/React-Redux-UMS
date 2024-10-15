@@ -156,7 +156,7 @@ export const loginUser = (credentials) => async (dispatch) => {
         dispatch(loginSuccess(response.data));
     } catch (error) {
         console.error('Login Error:', error);
-        const errorMessage = error.response && error.response.data && error.response.data.message
+        const errorMessae = error.response && error.response.data && error.response.data.message
             ? error.response.data.message
             : error.message;
 

@@ -62,7 +62,7 @@ const Login = () => {
 
   return (
     <div className="login-container d-flex align-items-center justify-content-center">
-      <div className="card shadow-lg">
+      <div className="card shadow-lg" >
         <div className="card-body p-5">
           <h3 className="card-title text-center mb-4">Login</h3>
 

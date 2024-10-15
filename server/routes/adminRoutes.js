@@ -46,15 +46,54 @@ router.post('/login', async (req, res) => {
 });
 
 
+//============== DASHBOARD RENDERING ============
 router.get('/dashboard', adminMiddleware, async (req, res) => {
     try {
-      const users = await User.find().select('name email createdAt').sort({ createdAt: -1 })
+      const users = await User.find().select('name email createdAt ').sort({ createdAt: -1 })
       
       res.status(200).json(users);
     } catch (error) {
       console.error('Error fetching users:', error);
       res.status(500).json({ message: 'Server error.' });
+    } 
+});
+
+
+
+//============== USER DETAILS UPDATING =============
+router.put('/updateUser',async(req,res)=>{
+  try {
+    const {name,email,id} = req.body
+    const user = await User.findById(id)
+
+    if(!id){
+      return res.status(400).json({message : 'User id is missing...'})
     }
-  });
+
+    if(name){
+      user.name = name
+    }
+    if(email){
+      user.email = email
+    }
+
+    const updatedUser = await user.save()
+    const userResponse = {
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      pic: updatedUser.pic,
+      isAdmin: updatedUser.isAdmin,
+      createdAt: updatedUser.createdAt,
+      updatedAt: updatedUser.updatedAt,
+    };
+
+    res.status(200).json(userResponse)
+
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+})
 
 module.exports = router

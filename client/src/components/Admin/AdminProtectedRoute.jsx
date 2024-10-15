@@ -8,8 +8,6 @@ const AdminProtectedRoute = ({children}) => {
     if(!adminUser){
         return <Navigate to='/admin/login' replace />
     }
-
-
   return children 
 }
 

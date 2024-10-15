@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import banner from '../assets/header-img.svg';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
+ 
 const HomePage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();

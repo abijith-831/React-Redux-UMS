@@ -1,11 +1,11 @@
-// client/src/components/User/Signup.jsx
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome
-import '../css/signup.css'; // Create and use a separate CSS file for Signup
+import '@fortawesome/fontawesome-free/css/all.min.css'; 
+import '../css/signup.css'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { signupUser, resetUserState } from '../../redux/userSlice'; 
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify'
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -59,14 +59,24 @@ const Signup = () => {
   useEffect(() => {
     if (success) {
       navigate('/');
+      toast.success('SignUp successful!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       dispatch(resetUserState());
     }
   }, [success, navigate, dispatch]);
 
   return (
-    <div className="signup-container d-flex align-items-center justify-content-center">
-      <div className="card shadow-lg">
-        <div className="card-body p-5">
+    <div  className="signup-container d-flex align-items-center justify-content-center">
+      <div className="card shadow-lg" >
+        <div className="card-body p-5" >
           <h3 className="card-title text-center mb-4">Sign Up</h3>
           {error && <div className="alert alert-danger">{error}</div>}
           {validationError && <div className="alert alert-warning">{validationError}</div>}
