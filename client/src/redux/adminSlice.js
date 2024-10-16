@@ -46,6 +46,24 @@ const adminSlice = createSlice({
       },
       setUsers: (state, action) => {
         state.users = action.payload; 
+      },
+      deleteUserStart:(state)=>{
+        state.loading = true
+        state.error = null
+        state.success = false
+      },
+      deleteUserSuccess: (state, action) => {
+        state.loading = false;
+        state.success = true;
+        const deletedUserId = action.payload;
+        state.users = state.users.filter(user => user._id !== deletedUserId);
+        toast.success('User deleted successfully!', { theme: 'colored' });
+      },
+      deleteUserFailure: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+        toast.error(action.payload, { theme: 'colored' });
       }
     },
     extraReducers: (builder) => {
@@ -71,7 +89,7 @@ const adminSlice = createSlice({
 })
 
 
-
+//=========== ADMIN LOGIN -==============
 export const adminLogin = createAsyncThunk(
     'admin/login',
     async({email , password} , thunkAPI)=>{
@@ -98,7 +116,7 @@ export const adminLogin = createAsyncThunk(
 )
 
 
-
+//=========== UPDATE USER ==================
 export const updateUser = (userData)=>async(dispatch)=>{
   dispatch(updateUserStart())
   try {
@@ -108,9 +126,8 @@ export const updateUser = (userData)=>async(dispatch)=>{
       }
     }
     
-
-    const response = await axios.put('http://localhost:5002/api/admin/updateUser', userData, config);
-    console.log('resnjs',response.data);
+    const response= await axios.put('http://localhost:5002/api/admin/updateUser', userData, config);
+    
     dispatch(updateUserSuccess(response.data))
   } catch (error) {
     console.error('Profile Update Error:', error);
@@ -122,12 +139,38 @@ export const updateUser = (userData)=>async(dispatch)=>{
 }
 
 
+
+
+export const deleteUser = (userData)=>async(dispatch)=>{
+  dispatch(deleteUserStart())
+  console.log('user',userData);
+    try {
+      const config = {
+        headers : {
+          'Content-Type': 'application/json'
+        }
+      }
+
+      const response= await axios.put('http://localhost:5002/api/admin/deleteUser', {userId:userData}, config);
+      console.log('res',response.data);
+      dispatch(deleteUserSuccess(response.data))
+    } catch (error) {
+      console.error('User Delete Error:', error);
+      const errorMessage = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+      dispatch(deleteUserFailure(errorMessage));
+    }
+}
 export const { adminLogout,
               resetAdminState,
               updateUserStart,
               updateUserSuccess,
               updateUserFailure,
-              setUsers
+              setUsers,
+              deleteUserStart,
+              deleteUserSuccess,
+              deleteUserFailure
                } = adminSlice.actions;
 
 export default adminSlice.reducer;

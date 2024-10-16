@@ -4,13 +4,13 @@ import axiosInstance from '../../api/axios';
 import '../css/dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { updateUser } from '../../redux/adminSlice';
+import { message } from 'antd';
+import { updateUser , deleteUser} from '../../redux/adminSlice';
+import {toast} from 'react-toastify'
 
 
 const AdminDashboard = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
 
   const [users, setUsers] = useState([]);
@@ -26,8 +26,13 @@ const AdminDashboard = () => {
   const [newName , setNewName] = useState('')
   const [newEmail , setNewEmail] = useState('')
 
+  const [userToDelete , setUserToDelete] = useState(null)
+  const [showDeleteModal , setShowDeleteModal] = useState(false)
+
+
   
 
+  //========== FOR RENDERING USER DETAILS ==========
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -52,9 +57,10 @@ const AdminDashboard = () => {
 
     fetchUsers();
   }, []);
+  //================================================
 
 
-
+  //=========== FOR UPDATING USER DETAILS ==========
   const handleEditUser = (user)=>{
     setShowModal(true)
     setSelected(user)
@@ -72,7 +78,7 @@ const AdminDashboard = () => {
     };
   
     try {
-      await dispatch(updateUser(updatedUser));
+       dispatch(updateUser(updatedUser));
 
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
@@ -82,42 +88,50 @@ const AdminDashboard = () => {
       setShowModal(false);
       setSelected(null);
   
-      toast.success('Profile updated successfully!', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      message.success('Profile updated successfully!')
       
     } catch (error) {
-      toast.error('Failed to update profile', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      message.error('Failed to update profile')
     }
   };
-  
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelected(null);
   };
+  //===============================================
+  
+
+
+  //=============   FOR DELETING USERS =============
+  const handleDeleteUser = async(user)=>{
+    setUserToDelete(user)
+    setShowDeleteModal(true)
+  }
+  
+  const handleCloseDeleteModal = ()=>{
+    setUserToDelete(null)
+    setShowDeleteModal(false)
+  }
+
+  const confirmDeleteUser = async()=>{
+    if(!userToDelete) return
+
+    try {
+      dispatch(deleteUser(userToDelete._id))
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userToDelete._id));
+      setShowDeleteModal(false)
+      setUserToDelete(null)
+      message.success('User Deleted successfully!')
+    } catch (error) {
+      message.error('Failed to delete user')
+    }
+  }
+  //=================================================
 
 
 
-
-
-
+  //============== FOR SEARCHING USERS=================
   const handleSearch = (e)=>{
     setSearchItems(e.target.value)
   }
@@ -125,6 +139,7 @@ const AdminDashboard = () => {
   const searchedUsers = users.filter(user=> 
     user.name.toLowerCase().includes(searchItems.toLowerCase()) 
   )
+  //====================================================
 
   return (
     <div className='dashboard'>
@@ -165,7 +180,7 @@ const AdminDashboard = () => {
                     <Button onClick={()=>handleEditUser(user)} variant="warning" size="sm" className="me-2">
                       Edit
                     </Button>
-                    <Button variant="danger" size="sm">
+                    <Button onClick={()=>handleDeleteUser(user)} variant="danger" size="sm">
                       Delete
                     </Button>
                   </td>
@@ -215,7 +230,29 @@ const AdminDashboard = () => {
             </Form>
           </Modal.Body>
         </Modal>
+
+        
       )}
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Confirm Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {userToDelete && (
+                    <p>
+                      Are you sure you want to delete <strong>{userToDelete.name}</strong>?
+                    </p>
+                  )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                    Cancel
+                  </Button>
+                  <Button variant="danger" onClick={confirmDeleteUser}>
+                    Delete
+                  </Button>
+                </Modal.Footer>
+            </Modal>
     </div>
   );
 };

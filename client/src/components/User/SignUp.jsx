@@ -45,7 +45,9 @@ const Signup = () => {
       return;
     }
 
-    setValidationError('');
+    if(!validateForm()){
+      return
+    }
 
     const data = new FormData();
     data.append('name', name);
@@ -72,6 +74,33 @@ const Signup = () => {
       dispatch(resetUserState());
     }
   }, [success, navigate, dispatch]);
+
+
+  const validateForm = () => {
+    const { name, email, password } = formData;
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(name)) {
+      setValidationError('Name should contain only alphabets and spaces.');
+      return false;
+    }
+
+
+    const emailRegex = /^[^\s@]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+      setValidationError('Please enter a valid Email address');
+      return false;
+    }
+
+   
+    if (password.length < 3) {
+      setValidationError('Password should be at least 3 characters...');
+      return false;
+    }
+
+    setValidationError('');
+    return true;
+  };
 
   return (
     <div  className="signup-container d-flex align-items-center justify-content-center">
@@ -103,7 +132,7 @@ const Signup = () => {
                 <div className="form-group mb-3 position-relative">
                   <label htmlFor="email" className="form-label">Email address</label>
                   <input
-                    type="email"
+                    type="text"
                     className="form-control form-control-lg ps-5"
                     id="email"
                     name="email"

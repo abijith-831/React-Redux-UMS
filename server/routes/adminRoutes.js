@@ -7,6 +7,7 @@ require('dotenv').config()
 const adminMiddleware = require('../middleware/adminMIddleware')
 
 
+
 ///=======LOGIN ROUTE ============
 router.post('/login', async (req, res) => {
     try {
@@ -44,6 +45,7 @@ router.post('/login', async (req, res) => {
       res.status(500).json({ message: 'Server error.' });
     }
 });
+
 
 
 //============== DASHBOARD RENDERING ============
@@ -93,6 +95,25 @@ router.put('/updateUser',async(req,res)=>{
   } catch (error) {
     console.error('Error updating profile:', error);
     res.status(500).json({ message: 'Server error.' });
+  }
+})
+
+
+router.put('/deleteUser',async(req,res)=>{
+  
+  try {
+    const {userId} = req.body
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId)
+
+    res.status(200).json({message : "User deleted Successfully!",user:deletedUser})
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Error deleting user', error })
   }
 })
 
